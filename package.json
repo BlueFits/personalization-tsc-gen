@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "npm run build && npm run inline",
-    "build-prod": "webpack --config webpack.config.prod.js",
-    "build": "webpack",
+    "compile": "npm run build-dev && npm run inline",
+    "build": "npm run clean && webpack --config webpack.config.prod.js && npm run inline && npm run cleantemp",
+    "build-dev": "webpack",
     "serve": "webpack serve",
     "inline": "inline-source --root ./dist dist/temp/index-pre.html > dist/index.html",
     "cleantemp": "rimraf dist/temp",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist/*",
     "start": "tsc ./services/LiveReload/index.ts && node ./services/LiveReload/index.js",
     "devstart": "cd ./services/LiveReload/ && webpack"
   },
