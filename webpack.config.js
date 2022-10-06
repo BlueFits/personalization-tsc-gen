@@ -4,9 +4,12 @@ const path = require("path");
 
 module.exports = {
     mode: "development",
-    entry: "./src/app.ts",
+    entry: {
+        bundle: "./src/app.ts",
+        // reload: "./services/LiveReload/index.ts",
+    },
     output: {
-        filename: "bundle.js",
+        filename: "[name].js",
         path: path.resolve(__dirname + "/dist/temp"),
         publicPath: "/dist/"
     },

@@ -1,4 +1,3 @@
-
 (window as any).pers000ChangesApplied = false;
 
 const PERS_STORY = "pers-000";
