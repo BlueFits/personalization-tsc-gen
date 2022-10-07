@@ -1,7 +1,7 @@
 import cheerio from "cheerio";
 import os from 'os';
 import path from 'path';
-import fs from 'fs';
+import fs, { PathLike } from 'fs';
 
 const WIN_APPDATA = process.env.LOCALAPPDATA || '/';
 
@@ -81,7 +81,7 @@ export const readHTML = (html: string) => {
     };
 };
 
-export const readFile = async (filePath: string): Promise<string | undefined> => {
+export const readFile = async (filePath: PathLike): Promise<string | undefined> => {
     if(!filePath) {
         throw new Error("YOUR-EXTENSION: Working folder not found, open a folder an try again");
     } else {

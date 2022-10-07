@@ -1,24 +1,35 @@
-import { readHTML, getPathToChrome, existsSync, readFile, readFilePath } from "./utils";
+import { readHTML, getPathToChrome, existsSync, readFile, readFilePath } from "../helpers/utils";
 import pupeteer from 'puppeteer';
 import path from 'path';
+import process from "process";
+import { PathLike } from "fs";
 
 export default class PuppeteerBrowser {
 	private page: pupeteer.Page;
+	private jsPath: PathLike;
+	//Singleton Pattern
+	private static instance: PuppeteerBrowser;
 
-    constructor (page: pupeteer.Page) {
+    constructor (page: pupeteer.Page, jsPath: PathLike) {
         if (typeof page === 'undefined') {
             throw new Error('Cannot be called directly');
         } else {
 			this.page = page;
+			this.jsPath = jsPath;
 		}
     };
 
 	static async build(url: string) {
+		if (this.instance) return this.instance;
+
         const pathToChrome =  getPathToChrome();
-		
+		const jsPath: PathLike = path.resolve(process.cwd() + "/dist/bundle.js");
+
 		if (!pathToChrome || !existsSync(pathToChrome)) {
             throw new Error('Chrome was not found. Chrome must be installed for this extension to function. If you have Chrome installed at a custom location you can specify it in the \'chromePath\' setting.');
-        };
+        } else if (!existsSync(jsPath)) {
+			throw new Error("No viable bundle.js")
+		};
 
         let browser = await pupeteer.launch({
 			executablePath: pathToChrome,
@@ -33,16 +44,18 @@ export default class PuppeteerBrowser {
 			if(page) {page.close();};
 		 });
 
-		//  browser.on("disconnected", async () => {
-		// 	 onSaveCleaner.dispose();
-		//  });
+		 browser.on("disconnected", async () => {
+			process.exit();
+		 });
+
 		//Target first tab
 
 		const pages = await browser.pages();
 		const page = pages[0];
 		await page.goto(url, { waitUntil: 'load' });
 
-        return new PuppeteerBrowser(page);
+        this.instance = new PuppeteerBrowser(page, jsPath);
+		return this.instance;
     };
 
 	public async start() {
@@ -50,40 +63,31 @@ export default class PuppeteerBrowser {
 	};
 
 	public async render() {
-		//Read the file
-		let file: any = await readFile(path.resolve(__dirname + "../../../../dist/index.html"));
+		try {
+			//Read the file
+			let bundleScript: string = await readFile(this.jsPath)! as string;
 
-		// Parse the html
-		let { scriptWithSrc, scriptTxt, styleTxt, linkTags }: any = readHTML(file);
+			await this.page.$eval("head", (elem: any, scriptTxt: any, styleTxt: any) => { 
+				let script = document.createElement("script");
+				let style = document.createElement("style");
+				style.id = "inject_style_id";
+				style.innerHTML = styleTxt;
+				script.id="inject_script_id";
+				script.type = "text/javascript";	
+				script.text = scriptTxt;
+				elem.appendChild(style);
+				elem.appendChild(script);
+			}, bundleScript, "");
 
-		if (linkTags.length > 0) {
-			await this.page.$eval("head", () => console.log('%c $$$JS_INJECT: Loading Additional Link Tags', 'background: #222; color: #bada55'));
-			this.createAsyncTag(linkTags, "href", "link");
+			await this.page.$eval("head", () => console.log('%c $$$JS_INJECT: Changes are live', 'background: #222; color: #bada55'));
+		} catch(err) {
+			throw err;
 		}
-		if (scriptWithSrc.length > 0) {
-			await this.page.$eval("head", () => console.log('%c $$$JS_INJECT: Loading Additional Script Tags', 'background: #222; color: #bada55'));
-			this.createAsyncTag(scriptWithSrc, "src", "script");
-		}
-		if (linkTags.length > 0 || scriptWithSrc.length > 0) {
-			// await this.page.waitForNavigation();
-			await this.page.waitForTimeout(1000);
-		}
-		await this.page.$eval("head", (elem: any, scriptTxt: any, styleTxt: any) => { 
-			let script = document.createElement("script");
-			let style = document.createElement("style");
-			style.id = "inject_style_id";
-			style.innerHTML = styleTxt;
-			script.id="inject_script_id";
-			script.type = "text/javascript";	
-			script.text = scriptTxt;
-			elem.appendChild(style);
-			elem.appendChild(script);
-		}, scriptTxt, styleTxt);
-		await this.page.$eval("head", () => console.log('%c $$$JS_INJECT: Changes are live', 'background: #222; color: #bada55'));
 	};
 
-	public async reloadTab () {
+	public async reloadTab(): Promise<void> {
 		await this.page.reload({ waitUntil: 'load' });
+		await this.render();
 	};
 	//Used in render to create network fetching scripts or links
 	public async createAsyncTag (tag: any, prop: string, block: string) {
@@ -103,4 +107,8 @@ export default class PuppeteerBrowser {
 		}, tag, prop, block);
 		if (tag[tag.length - 1].id) {await this.page.waitForSelector(`#${tag[tag.length - 1].id}`)};
 	};
+
+	public get getJsPath() {
+		return this.jsPath;
+	}
 }
