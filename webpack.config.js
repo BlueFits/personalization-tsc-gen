@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
     mode: "development",
     entry: {
-        bundle: "./src/app.ts",
+        bundle: "./src/global.ts",
     },
     output: {
         filename: "[name].js",

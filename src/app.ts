@@ -1,32 +1,20 @@
-(window as any).pers000ChangesApplied = false;
 
-const PERS_STORY = "pers-000";
+const PERS_STORY: string = "pers-000";
 
-const pers000ChangesToApply = async () => {
-    
+const persChangesToApply: () => void = async () => {
+
     const tryCatch = (fun: () => void, block: string) => {
         try {fun();} catch (err) {console.trace('%c ' + PERS_STORY + ' error in ' + block + ': ' + err, 'background: #222; color: #AD7150');}
     }
 
     const siteDefaults = new Promise<void>((res) => {
         tryCatch(() => {
-            $("#persCategoryScroller").css({ border: "1px solid red" });
             $("#main").css("opacity", "1");
         }, "siteDefaults")
         res();
     });
 
     await siteDefaults;
-}
+} ;
 
-window.addEventListener("load", function () {
-    if (!(window as any).pers000ChangesApplied) {
-        (window as any).pers000ChangesApplied = true;
-        pers000ChangesToApply();
-    }
-});
-
-if (!(window as any).pers000ChangesApplied && document.readyState === "complete") {
-    (window as any).pers000ChangesApplied = true;
-    pers000ChangesToApply();
-}
+export default persChangesToApply;
