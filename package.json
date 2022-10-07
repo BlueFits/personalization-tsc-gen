@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": "./bin/cli.js",
   "scripts": {
     "build": "npm run clean && webpack --config webpack.config.prod.js",
     "build-dev": "webpack",
