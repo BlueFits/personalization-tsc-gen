@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run clean && webpack --config webpack.config.prod.js",
     "build-dev": "webpack",
     "start": "webpack && concurrently \"webpack --watch\" \"npm run start-dev\"",
     "serve": "webpack serve",
-    "cleantemp": "rimraf dist/temp",
     "clean": "rimraf dist/*",
-    "compile-reload": "rimraf services/LiveReload/dist/* && tsc -b services/LiveReload",
+    "cleanlivereload": "rimraf services/LiveReload/dist/*",
+    "compile-reload": "npm run cleanlivereload && tsc -b services/LiveReload",
     "start-dev": "npm run compile-reload && node ./services/LiveReload/dist/index.js",
     "devstart": "cd ./services/LiveReload/ && webpack"
   },
