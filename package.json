@@ -1,6 +1,6 @@
 {
-  "name": "pers000",
-  "version": "1.0.0",
+  "name": "@bluefits/pers-tsc-gen",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "bin": "./bin/cli.js",
