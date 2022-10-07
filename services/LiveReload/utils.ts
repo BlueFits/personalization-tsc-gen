@@ -1,8 +1,7 @@
-// const cheerio = require('cheerio');
-import * as cheerio from "cheerio";
-import * as os from 'os';
-import * as path from 'path';
-import * as fs from 'fs';
+import cheerio from "cheerio";
+import os from 'os';
+import path from 'path';
+import fs from 'fs';
 
 const WIN_APPDATA = process.env.LOCALAPPDATA || '/';
 

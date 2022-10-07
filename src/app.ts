@@ -10,6 +10,7 @@ const pers000ChangesToApply = async () => {
 
     const siteDefaults = new Promise<void>((res) => {
         tryCatch(() => {
+            $("#persCategoryScroller").css({ border: "1px solid red" });
             $("#main").css("opacity", "1");
         }, "siteDefaults")
         res();

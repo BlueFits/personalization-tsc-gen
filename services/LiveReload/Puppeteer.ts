@@ -1,23 +1,20 @@
 import { readHTML, getPathToChrome, existsSync, readFile, readFilePath } from "./utils";
-import * as pupeteer from 'puppeteer';
-import * as path from 'path';
+import pupeteer from 'puppeteer';
+import path from 'path';
 
 export default class PuppeteerBrowser {
-	private page: any;
-	private currentlyOpenTabfilePath: any;
+	private page: pupeteer.Page;
 
-    constructor (page: any, currentlyOpenTabfilePath: any) {
+    constructor (page: pupeteer.Page) {
         if (typeof page === 'undefined') {
             throw new Error('Cannot be called directly');
         } else {
 			this.page = page;
-			this.currentlyOpenTabfilePath = currentlyOpenTabfilePath;
 		}
     };
 
 	static async build(url: string) {
         const pathToChrome =  getPathToChrome();
-		const currentlyOpenTabfilePath = await readFilePath();
 		
 		if (!pathToChrome || !existsSync(pathToChrome)) {
             throw new Error('Chrome was not found. Chrome must be installed for this extension to function. If you have Chrome installed at a custom location you can specify it in the \'chromePath\' setting.');
@@ -32,7 +29,7 @@ export default class PuppeteerBrowser {
 
 		//Event Listeners
 		browser.on("targetcreated", async (target: any)=>{ 
-			const page:any = await target.page();
+			const page: pupeteer.Page = await target.page();
 			if(page) {page.close();};
 		 });
 
@@ -45,12 +42,8 @@ export default class PuppeteerBrowser {
 		const page = pages[0];
 		await page.goto(url, { waitUntil: 'load' });
 
-        return new PuppeteerBrowser(page, currentlyOpenTabfilePath);
+        return new PuppeteerBrowser(page);
     };
-
-	public getFilePath(): string {
-		return this.currentlyOpenTabfilePath;
-	};
 
 	public async start() {
 		await this.render();
@@ -58,7 +51,7 @@ export default class PuppeteerBrowser {
 
 	public async render() {
 		//Read the file
-		let file: any = await readFile(path.resolve(__dirname + "../../../dist/index.html"));
+		let file: any = await readFile(path.resolve(__dirname + "../../../../dist/index.html"));
 
 		// Parse the html
 		let { scriptWithSrc, scriptTxt, styleTxt, linkTags }: any = readHTML(file);
@@ -94,7 +87,7 @@ export default class PuppeteerBrowser {
 	};
 	//Used in render to create network fetching scripts or links
 	public async createAsyncTag (tag: any, prop: string, block: string) {
-		await this.page.$eval("head", (elem: any, tag: any, prop: string, block: string) => {
+		await this.page.$eval("head", (elem: any) => {
 			for (let val of tag) {
 				let createdTag: any = document.createElement(block);
 				if (val.id) {createdTag.id = val.id;};

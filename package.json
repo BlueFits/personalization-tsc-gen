@@ -12,14 +12,15 @@
     "inline": "inline-source --root ./dist dist/temp/index-pre.html > dist/index.html",
     "cleantemp": "rimraf dist/temp",
     "clean": "rimraf dist/*",
-    "start": "tsc ./services/LiveReload/index.ts && node ./services/LiveReload/index.js",
+    "start": "rimraf services/LiveReload/dist && tsc -b services/LiveReload && node ./services/LiveReload/dist/index.js",
     "devstart": "cd ./services/LiveReload/ && webpack"
   },
   "author": "Christian Rojas",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "14.x",
     "@types/jquery": "^3.5.14",
+    "@types/node": "14.x",
+    "@types/parse-filepath": "^1.0.0",
     "@types/puppeteer": "^5.4.6",
     "cheerio": "^1.0.0-rc.12",
     "clean-webpack-plugin": "^4.0.0",
@@ -27,14 +28,13 @@
     "html-webpack-plugin": "^5.5.0",
     "inline-source-cli": "^2.0.0",
     "lite-server": "^2.5.4",
+    "parse-filepath": "^1.0.2",
     "puppeteer": "^13.7.0",
     "rimraf": "^3.0.2",
     "ts-loader": "^9.4.1",
     "typescript": "^4.8.4",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1",
-    "@types/parse-filepath": "^1.0.0",
-    "parse-filepath": "^1.0.2"
+    "webpack-dev-server": "^4.11.1"
   }
 }
