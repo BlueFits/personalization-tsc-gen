@@ -10,10 +10,9 @@
     "start": "webpack && concurrently \"webpack --watch\" \"npm run start-dev\"",
     "serve": "webpack serve",
     "clean": "rimraf dist/*",
-    "cleanlivereload": "rimraf services/LiveReload/dist/*",
-    "compile-reload": "npm run cleanlivereload && tsc -b services/LiveReload",
-    "start-dev": "npm run compile-reload && node ./services/LiveReload/dist/index.js",
-    "devstart": "cd ./services/LiveReload/ && webpack"
+    "cleanlivereload": "rimraf LiveReload/dist/*",
+    "compile-reload": "npm run cleanlivereload && tsc -b LiveReload",
+    "start-dev": "npm run compile-reload && node ./LiveReload/dist/index.js"
   },
   "author": "Christian Rojas",
   "license": "ISC",
