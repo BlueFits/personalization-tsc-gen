@@ -1,15 +1,15 @@
 import persChangesToApply from "./app";
 
-(window as any).pers000ChangesApplied = false;
+(window as any).persChangesApplied = false;
 
 window.addEventListener("load", function () {
-    if (!(window as any).pers000ChangesApplied) {
-        (window as any).pers000ChangesApplied = true;
+    if (!(window as any).persChangesApplied) {
+        (window as any).persChangesApplied = true;
         persChangesToApply();
     }
 });
 
-if (!(window as any).pers000ChangesApplied && document.readyState === "complete") {
-    (window as any).pers000ChangesApplied = true;
+if (!(window as any).persChangesApplied && document.readyState === "complete") {
+    (window as any).persChangesApplied = true;
     persChangesToApply();
 }
