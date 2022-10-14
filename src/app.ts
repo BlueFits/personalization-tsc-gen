@@ -9,6 +9,7 @@ const persChangesToApply: () => void = async () => {
 
     const siteDefaults = new Promise<void>((res) => {
         tryCatch(() => {
+            $("#persCategoryScroller > h1").css({ color: "red" })
             $("#main").css("opacity", "1");
         }, "siteDefaults")
         res();

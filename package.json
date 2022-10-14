@@ -7,11 +7,10 @@
   "scripts": {
     "build": "npm run clean && webpack --config webpack.config.prod.js",
     "build-dev": "webpack",
-    "start": "webpack && concurrently \"webpack --watch\" \"npm run start-dev\"",
+    "start": "webpack && concurrently \"webpack --watch\" \"npm run livereload\"",
     "serve": "webpack serve",
     "clean": "rimraf dist/*",
-    "cleanlivereload": "rimraf LiveReload/dist/*",
-    "compile-reload": "npm run cleanlivereload && tsc -b LiveReload"
+    "livereload": "node live-reload.config.js"
   },
   "author": "Christian Rojas",
   "license": "ISC",
