@@ -6,7 +6,7 @@ const path = require("path");
 module.exports = {
     mode: "production",
     entry: {
-        bundle: "./src/app.ts",
+        bundle: "./src/global.ts",
     },
     output: {
         filename: "[name].js",

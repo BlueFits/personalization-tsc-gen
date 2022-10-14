@@ -11,8 +11,7 @@
     "serve": "webpack serve",
     "clean": "rimraf dist/*",
     "cleanlivereload": "rimraf LiveReload/dist/*",
-    "compile-reload": "npm run cleanlivereload && tsc -b LiveReload",
-    "start-dev": "npm run compile-reload && node ./LiveReload/dist/index.js"
+    "compile-reload": "npm run cleanlivereload && tsc -b LiveReload"
   },
   "author": "Christian Rojas",
   "license": "ISC",
