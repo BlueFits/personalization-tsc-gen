@@ -6,7 +6,7 @@ const path = require("path");
 module.exports = {
     mode: "production",
     entry: {
-        bundle: "./src/global.ts",
+        bundle: "./src/experience_A/global.ts",
     },
     output: {
         filename: "[name].js",
@@ -33,7 +33,7 @@ module.exports = {
     plugins: [
         new CleanPlugin.CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            filename: "index.html",
+            filename: "[name].html",
             template: "./template.ejs",
             inject: false,
             minify: true,

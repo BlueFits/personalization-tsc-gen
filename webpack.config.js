@@ -1,12 +1,14 @@
 const path = require("path");
 
+let experienceFolder = "experience_A";
+
 module.exports = {
     mode: "development",
     entry: {
-        bundle: "./src/global.ts",
+        bundle: `./src/${experienceFolder}/global.ts`,
     },
     output: {
-        filename: "[name].js",
+        filename: "bundle.js",
         path: path.resolve(__dirname + "/dist"),
         publicPath: "/dist/",
         clean: true,
