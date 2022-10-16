@@ -19,7 +19,6 @@
   "devDependencies": {
     "@types/jquery": "^3.5.14",
     "@types/node": "14.x",
-    "@types/puppeteer": "^5.4.6"
   },
   "dependencies": {
     "chokidar": "^3.5.3",
