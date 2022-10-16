@@ -1,7 +1,6 @@
 const { execSync } = require("child_process");
 const ncp = require('ncp').ncp;
 const AdjustingInterval = require("../components/AdjustingInterval");
-const rimraf = require("rimraf");
 const path = require("path");
 
 exports.runCommand = command => {
