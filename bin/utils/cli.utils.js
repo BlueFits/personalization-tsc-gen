@@ -25,7 +25,10 @@ exports.copy = async (from, to) => {
 
     ticker.start();
 
-    ncp(path.join(__dirname, from), path.join(currDir, to || ""), (err) => {
+    ncp(path.join(__dirname, from), path.join(currDir, to || ""), {
+        clobber: false,
+        stopOnErr: true,
+    }, (err) => {
         if (err) {
             return console.error(err);
         }

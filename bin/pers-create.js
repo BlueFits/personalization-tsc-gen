@@ -1,37 +1,29 @@
 #!/usr/bin/env node
-const { copy } = require("./utils/cli.utils");
+const rimraf = require("rimraf");
+const path = require("path");
+const { removeFiles, copyDevFiles, copyNodeModules, copyStarterCode, removeAllFiles } = require("./utils/helper.utils");
+const { cleanDir } = require("./constants/dir.constants");
 
-const copyNodeModules = async () => {
-    await copy("../../node_modules/", "./node_modules/");
-}
-
-const copyDevFiles = async () => {
-    await copy("../../template/dev_dependency/");
-}
-
-const copyStarterCode = async () => {
-    await copy("../../template/starter_code/");
-}
 
 const param_1 = process.argv[2];
+const param_2 = process.argv[3];
 
 const launch = async () => {
     switch(param_1) {
-        case "dependency_only": 
+        case "get_dependencies": 
             console.log("Generating dependencies...");
-            await copyNodeModules();
+            copyNodeModules();
             break;
         case "init": 
+            if (param_2 && param_2 === "--overwrite") removeAllFiles();
             console.log("Generating all required files...");
-            await copyNodeModules();
-            await copyDevFiles();
-            await copyStarterCode();
+            copyNodeModules();
+            copyDevFiles();
+            copyStarterCode();
             break;
-        case "dev_only":
-            await copyDevFiles();
-            break;
-        case "starter_only":
-            await copyStarterCode();
+        case "clean":
+            param_2 === "--full" ? removeAllFiles() : removeFiles(cleanDir);
+            console.log("DONE");
             break;
         default:
             console.log("Invalid arguments, exiting application...");
