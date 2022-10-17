@@ -1,5 +1,5 @@
 import persChangesToApply from "./app";
-import "./global.css";
+import "./styles/global.css";
 
 (window as any).persChangesApplied = false;
 
