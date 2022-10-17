@@ -1,5 +1,5 @@
 import React from 'react';//Needed wherever react is used
-import constants from "./constants/default.constants";
+import constants from "../common/constants/default.constants";
 import { tryCatch } from "../common/utils/default.utils";
 import { createReactRoot } from "../common/utils/react.utils";
 
