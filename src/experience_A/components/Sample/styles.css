@@ -4,3 +4,10 @@
     justify-content: center;
     height: 100vh;
 }
+
+.span_text {
+    color: blue;
+    cursor: pointer;
+    border: 1px solid black;
+    padding: 10px;
+}
