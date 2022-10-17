@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-const rimraf = require("rimraf");
-const path = require("path");
 const { removeFiles, copyDevFiles, copyNodeModules, copyStarterCode, removeAllFiles } = require("./utils/helper.utils");
 const { cleanDir } = require("./constants/dir.constants");
 
