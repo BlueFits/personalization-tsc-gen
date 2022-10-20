@@ -1,29 +1,53 @@
 import { createRoot } from 'react-dom/client';
 import React from "react";
 
-export enum actionType {
+export enum Itype {
     append,
     prepend,
     replace,
+    html,
 };
+
+type jQueryElement = string;
 
 export const createReactRoot = async (
     rootID: string, 
-    target: string, 
+    target: string | null, 
     render: React.ReactNode, 
-    type: actionType
-): Promise<void> => {
+    type?: Itype, 
+    { 
+        wrapperElement,
+        makeTargetRoot,
+        customID,
+    }: Partial<{
+         wrapperElement: jQueryElement; 
+         makeTargetRoot: boolean;
+         customID: string;
+    }> = {}
+    ): Promise<void> => {
     const createReactElem = new Promise<void>((res) => {
-        const rootElem = `<div id="${rootID}"></div>`;
+        let rootElem = `<div id="${rootID}"></div>`;
+        if (wrapperElement) {
+            rootElem = wrapperElement;
+        } else if (makeTargetRoot) {
+            $(target).attr("id", "")
+            $(target).attr("id", rootID)
+            rootElem = $(target);
+        } else if (customID && !target) {
+            rootElem = $(customID)
+        }
         switch(type) {
-            case actionType.append: 
+            case Itype.append:
                 $(target).append(rootElem);
                 break;
-            case actionType.prepend:
+            case Itype.prepend:
                 $(target).prepend(rootElem);
                 break;
-            case actionType.replace:
+            case Itype.replace: 
                 $(target).replaceWith(rootElem);
+                break;
+            case Itype.html:
+                $(target).html(rootElem);
                 break;
             default:
                 $(target).append(rootElem);

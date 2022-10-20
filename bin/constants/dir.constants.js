@@ -4,6 +4,7 @@ exports.cleanDir = [
     "/node_modules/",
     "/gitignore.remove_ext",
     "/.gitignore",
+    "/gitignore",
     "/LICENSE",
     "/live-reload.config.js",
     "/package.json",
@@ -14,5 +15,6 @@ exports.cleanDir = [
     "/tsconfig.remove_ext.json",
     "/webpack.config.js",
     "/webpack.config.prod.js",
-    "/.babelrc"
+    "/.babelrc",
+    "/babelrc",
 ];
