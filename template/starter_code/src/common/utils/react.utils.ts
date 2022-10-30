@@ -10,31 +10,37 @@ export enum Itype {
 
 type jQueryElement = string;
 
-export const createReactRoot = async (
+type createReactRootOptions = {
     rootID: string, 
-    target: string | null, 
+    target?: string | null, 
     render: React.ReactNode, 
-    type?: Itype, 
+    type?: Itype,
+    wrapperElement?: jQueryElement; 
+    makeTargetRoot?: boolean;
+    customTarget?: string;
+};
+
+export const createReactRoot = async ( 
     { 
+        rootID, 
+        target,
+        render,
+        type,
         wrapperElement,
         makeTargetRoot,
-        customID,
-    }: Partial<{
-         wrapperElement: jQueryElement; 
-         makeTargetRoot: boolean;
-         customID: string;
-    }> = {}
+        customTarget,
+    }: createReactRootOptions
     ): Promise<void> => {
     const createReactElem = new Promise<void>((res) => {
         let rootElem = `<div id="${rootID}"></div>`;
         if (wrapperElement) {
-            rootElem = wrapperElement;
+            rootElem = $(wrapperElement).attr("id", rootID)
         } else if (makeTargetRoot) {
             $(target).attr("id", "")
             $(target).attr("id", rootID)
             rootElem = $(target);
-        } else if (customID && !target) {
-            rootElem = $(customID)
+        } else if (customTarget && !target) {
+            rootElem = $(customTarget)
         }
         switch(type) {
             case Itype.append:
