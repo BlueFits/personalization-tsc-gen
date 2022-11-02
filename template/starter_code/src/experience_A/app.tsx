@@ -14,6 +14,7 @@ let persChangesToApply = async (): Promise<void> => {
     });
 
     await siteDefaults;
+
 } ;
 
 export default persChangesToApply;
