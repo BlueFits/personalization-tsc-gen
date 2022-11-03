@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const packageJSON = require("../package.json");
 const { removeFiles, copyDevFiles, copyNodeModules, copyStarterCode, removeAllFiles } = require("./utils/helper.utils");
 const { cleanDir } = require("./constants/dir.constants");
 
@@ -22,6 +23,9 @@ const launch = async () => {
         case "clean":
             param_2 === "--full" ? removeAllFiles() : removeFiles(cleanDir);
             console.log("DONE");
+            break;
+        case "-v":
+            console.log(JSON.parse(JSON.stringify(packageJSON)).version);
             break;
         default:
             console.log("Invalid arguments, exiting application...");
