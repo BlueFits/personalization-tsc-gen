@@ -1,4 +1,4 @@
-const { copy } = require("./cli.utils");
+const { copy, copyAll } = require("./cli.utils");
 const path = require("path");
 const rimraf = require("rimraf");
 
@@ -18,10 +18,6 @@ exports.copyNodeModules = async () => {
     await copy("../../node_modules/", "./node_modules/");
 }
 
-exports.copyDevFiles = async () => {
-    await copy("../../template/dev_dependency/");
-}
-
-exports.copyStarterCode = async () => {
-    await copy("../../template/starter_code/");
-}
+exports.copyAllWithException = async () => {
+    await copyAll("../../");
+};
