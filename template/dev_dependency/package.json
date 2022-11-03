@@ -11,7 +11,8 @@
     "start": "webpack && concurrently \"webpack --watch\" \"npm run livereload\"",
     "serve": "webpack serve",
     "clean": "rimraf dist/*",
-    "livereload": "node live-reload.config.js"
+    "livereload": "node live-reload.config.js",
+    "analyse" : "webpack --json > analysis.json"
   },
   "author": "Christian Rojas",
   "license": "ISC",
