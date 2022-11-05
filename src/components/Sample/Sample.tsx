@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import styles from "./Sample.module.css";
 
-const Sample = () => {
+interface ISample {
+	name: string;
+}
+
+const Sample: React.FC<ISample> = ({ name = "PERS" }) => {
 	const [clicked, isClicked] = useState(false);
 	return (
 		<div
 			className={styles.sample_style}
 		>
 			<h1>
-				Hello PERS <span className={styles.span_text} onClick={() => isClicked(!clicked)}>{ clicked ? ":)" : "CLICK ME" }</span>
+				Hello {name} <span className={styles.span_text} onClick={() => isClicked(!clicked)}>{ clicked ? ":)" : "CLICK ME" }</span>
 			</h1>
 		</div>
 	);
