@@ -1,6 +1,6 @@
 {
   "name": "@bluefits/pers-tsc-gen",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "",
   "bin": {
     "pers-tsc-gen": "bin/pers-create.js"
