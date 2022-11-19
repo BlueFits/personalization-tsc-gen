@@ -6,6 +6,7 @@ export enum Itype {
     prepend,
     replace,
     html,
+    before,
 };
 
 type jQueryElement = string;
@@ -55,6 +56,8 @@ export const createReactRoot = async (
             case Itype.html:
                 $(target).html(rootElem);
                 break;
+            case Itype.before: 
+                $(target).before(rootElem);
             default:
                 $(target).append(rootElem);
         }

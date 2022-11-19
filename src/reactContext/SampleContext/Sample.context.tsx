@@ -3,21 +3,21 @@ import styles from "./SampleContext.module.css";
 import Sample from "../../components/Sample/Sample";
 import { createReactRoot, Itype } from "../../utils/react.utils";
 
+const Index = () => {
+    return (
+        <div className={styles.custom_style}>
+            <Sample />
+        </div>
+    );
+}
+
 export default class SampleContext {
-    constructor(private name: string) {
+    constructor() {
         createReactRoot({
             rootID: "sample_id",
             target: "#persCategoryScroller",
             type: Itype.append,
-            render: this.render(),
+            render: <Index />,
         });
-    }
-
-    render() {
-        return (
-            <div className={styles.custom_style}>
-                <Sample name={this.name} />
-            </div>
-        );
     }
 };

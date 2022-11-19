@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./Sample.module.css";
 
 interface ISample {
-	name: string;
+	name?: string;
 }
 
 const Sample: React.FC<ISample> = ({ name = "PERS" }) => {
