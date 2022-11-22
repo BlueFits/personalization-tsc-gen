@@ -7,6 +7,6 @@ export default class ExperienceC extends ExperienceB {
     }
 
     SampleComponent() {
-        new SampleContext("Experience C");
+        new SampleContext();
     }
 }

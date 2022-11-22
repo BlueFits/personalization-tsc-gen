@@ -7,6 +7,6 @@ export default class ExperienceB {
     }
 
     SampleComponent() {
-        new SampleContext("Experience B");
+        new SampleContext();
     }
 }
