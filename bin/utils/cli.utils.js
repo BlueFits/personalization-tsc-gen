@@ -1,6 +1,5 @@
 const { execSync } = require("child_process");
 const ncp = require('ncp').ncp;
-const AdjustingInterval = require("../components/AdjustingInterval");
 const path = require("path");
 const rimraf = require("rimraf");
 const { Console } = require('console');
@@ -34,55 +33,41 @@ exports.copy = async (from, to) => {
             }
         }
     }, (err) => {
-        if (err) return console.error("ERROR:".red, err);
-        console.log("DONE".green);
+        if (err) return console.error(colors.red("ERROR:"), err);
+        console.log(colors.green("DONE"));
     });
 }
 
 exports.copyAll = async ({ noDep }) => {
+    if (noDep) console.log(colors.bgBlue("Bypassing all dependencies..."));
 
     const currDir = process.cwd();
-
-    var ticker = new AdjustingInterval(() => {
-        process.stdout.write("#");
-    }, 1000, () => {
-        console.warn('The drift exceeded the interval.');
-    });
-
-    if (noDep) ticker.start();
 
     ncp(path.join(__dirname, "../../"), path.join(currDir, ""), {
         clobber: false,
         stopOnErr: true,
         filter: (source) => {
-            if (noDep === false) return true;
-            if (fs.lstatSync(source).isDirectory()) {
-                return true;
-            } else {
-                if (!source.match(/\\node_modules/) && !source.match(/\\.git/)) {
-                    console.log(colors.blue("COPYING"), source);
-                    return true;
-                }
-                return false;
+            if (!noDep) {
+                console.log(colors.blue("COPYING"), source);
+                return true
             }
+            if (!fs.lstatSync(source).isDirectory()) return true;
+            if (!source.match(/\\node_modules/) && !source.match(/\\.git/) && !source.match(/\\dist/)) {
+                console.log(colors.blue("COPYING"), source);
+                return true;
+            }
+            return false;
         }
     }, (err) => {
-        if (err) {
-            return console.error(err);
-        }
-        if (noDep) {
-            ticker.stop();
-            console.log(" Completed".green);
-        }
-
-        console.log("finalizing files...".yellow);
-
+        if (err) { return console.error(err);}
+        console.log(colors.yellow("finalizing files..."));
+        //Remove excess nodule modules folder if there are no dep
         if (noDep) rimraf.sync(path.join(process.cwd(), "/node_modules"));
         rimraf.sync(path.join(process.cwd(), "/bin"));
         rimraf.sync(path.join(process.cwd(), "/dist"));
         rimraf.sync(path.join(process.cwd(), "/.git"));
         rimraf.sync(path.join(process.cwd(), "/.gitignore"));        
-        console.log("DONE".green);
+        console.log(colors.green("DONE"));
     });
 }
 

@@ -22,14 +22,11 @@ const launch = async () => {
             copyNodeModules();
             break;
         case "init": 
-
             let options = {
                 noDep: false,
             };
-
             console.log("Generating all required files...");
-
-            if (param_2 && param_2 === "--no_dep") options.noDep = true;
+            if (param_2 && param_2 === "--no_dep") options.noDep = true; 
             if (param_2 && param_2 === "--overwrite") removeAllFiles();
             copyAllWithException(options);
             break;
