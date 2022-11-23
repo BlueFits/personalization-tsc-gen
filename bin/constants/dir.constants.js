@@ -15,4 +15,5 @@ exports.cleanDir = [
     "/webpack.config.js",
     "/webpack.config.prod.js",
     "/.babelrc",
+    "/global.d.ts",
 ];
