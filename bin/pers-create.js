@@ -17,14 +17,21 @@ function HelpInfo(name, alias, description) {
 
 const launch = async () => {
     switch(param_1) {
-        case "get_dependencies": 
+        case "get_dep": 
             console.log("Generating dependencies...");
             copyNodeModules();
             break;
         case "init": 
-            if (param_2 && param_2 === "--overwrite") removeAllFiles();
+
+            let options = {
+                noDep: false,
+            };
+
             console.log("Generating all required files...");
-            copyAllWithException();
+
+            if (param_2 && param_2 === "--no_dep") options.noDep = true;
+            if (param_2 && param_2 === "--overwrite") removeAllFiles();
+            copyAllWithException(options);
             break;
         case "clean":
             param_2 === "--full" ? removeAllFiles() : removeFiles(cleanDir);

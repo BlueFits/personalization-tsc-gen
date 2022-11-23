@@ -5,6 +5,8 @@ const path = require("path");
 const rimraf = require("rimraf");
 const { Console } = require('console');
 const { Transform } = require('stream');
+const fs = require("fs");
+const colors = require('colors');
 
 exports.runCommand = command => {
     try {
@@ -20,27 +22,24 @@ exports.copy = async (from, to) => {
 
     const currDir = process.cwd();
 
-    var ticker = new AdjustingInterval(() => {
-        process.stdout.write("#");
-    }, 1000, () => {
-        console.warn('The drift exceeded the interval.');
-    });
-
-    ticker.start();
-
     ncp(path.join(__dirname, from), path.join(currDir, to || ""), {
         clobber: false,
         stopOnErr: true,
-    }, (err) => {
-        if (err) {
-            return console.error(err);
+        filter: (source) => {
+            if (fs.lstatSync(source).isDirectory()) {
+                return true;
+            } else {
+                console.log(colors.blue("COPYING"), source);
+                return true;
+            }
         }
-        ticker.stop();
-        console.log(": Completed");
+    }, (err) => {
+        if (err) return console.error("ERROR:".red, err);
+        console.log("DONE".green);
     });
 }
 
-exports.copyAll = async () => {
+exports.copyAll = async ({ noDep }) => {
 
     const currDir = process.cwd();
 
@@ -50,23 +49,40 @@ exports.copyAll = async () => {
         console.warn('The drift exceeded the interval.');
     });
 
-    ticker.start();
+    if (noDep) ticker.start();
 
     ncp(path.join(__dirname, "../../"), path.join(currDir, ""), {
         clobber: false,
         stopOnErr: true,
+        filter: (source) => {
+            if (noDep === false) return true;
+            if (fs.lstatSync(source).isDirectory()) {
+                return true;
+            } else {
+                if (!source.match(/\\node_modules/) && !source.match(/\\.git/)) {
+                    console.log(colors.blue("COPYING"), source);
+                    return true;
+                }
+                return false;
+            }
+        }
     }, (err) => {
         if (err) {
             return console.error(err);
         }
-        ticker.stop();
-        console.log(": Completed");
-        console.log("finalizing files...");
+        if (noDep) {
+            ticker.stop();
+            console.log(" Completed".green);
+        }
+
+        console.log("finalizing files...".yellow);
+
+        if (noDep) rimraf.sync(path.join(process.cwd(), "/node_modules"));
         rimraf.sync(path.join(process.cwd(), "/bin"));
         rimraf.sync(path.join(process.cwd(), "/dist"));
         rimraf.sync(path.join(process.cwd(), "/.git"));
-        rimraf.sync(path.join(process.cwd(), "/.gitignore"));
-        console.log("DONE");
+        rimraf.sync(path.join(process.cwd(), "/.gitignore"));        
+        console.log("DONE".green);
     });
 }
 

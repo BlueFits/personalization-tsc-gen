@@ -21,8 +21,8 @@ exports.copyNodeModules = async () => {
     await copy("../../node_modules/", "./node_modules/");
 }
 
-exports.copyAllWithException = async () => {
-    await copyAll("../../");
+exports.copyAllWithException = async (options) => {
+    await copyAll(options);
 };
 
 exports.genTemplate = async (nameParam, template, customPath, filename) => {
