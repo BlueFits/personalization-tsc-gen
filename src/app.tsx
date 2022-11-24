@@ -3,7 +3,7 @@ import ExperienceB from "./experience/ExperienceB";
 import ExperienceC from "./experience/ExperienceC";
 
 const persChangesToApply = () => {
-    new ExperienceB();
+    new ExperienceC();
 } ;
 
 export default persChangesToApply;

@@ -1,9 +1,11 @@
 const path = require("path");
 
+const currDir = process.cwd();
+
 module.exports = {
     mode: "development",
     entry: {
-        bundle: `./src/global.ts`,
+        bundle: path.resolve(currDir + "/src/global.ts"),
     },
     output: {
         filename: "bundle.js",
@@ -11,12 +13,6 @@ module.exports = {
         publicPath: "/dist/",
         clean: true,
     },
-    devServer: {
-        static: {
-            directory: path.join(__dirname, '/')
-        }
-    },
-    // devtool: "inline-source-map",
     module: {
         rules: [
             {
