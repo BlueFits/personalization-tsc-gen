@@ -1,22 +1,27 @@
-const { removeFiles, copyNodeModules, removeAllFiles, genTemplate, HelpConstructor} = require("../utils/helper.utils");
-const { table } = require("../utils/cli.utils");
+const { removeFiles, copyNodeModules, genTemplate, HelpConstructor, copyDevFiles, copyDevAndNode} = require("../utils/helper.utils");
+const { table, removeAllFiles } = require("../utils/cli.utils");
 const { cleanDir } = require("../constants/dir.constants");
 const templateIndex = require("../templates/index");
-const { copyAll } = require("../utils/cli.utils");
 
-exports.initController = (param_2) => {
-    let options = {
-        noDep: false,
-    };
-    console.log("Generating all required files...");
-    if (param_2 && param_2 === "--no_dep") options.noDep = true; 
-    if (param_2 && param_2 === "--overwrite") removeAllFiles();
-    copyAll(options);
+const initCommands = ["--overwrite", "--no_dep", "verbose"];
+exports.initController = async (param_2, param_3) => {
+    if (param_2 && !initCommands.includes(param_2)) throw new Error("Invalid paramater".red);
+    let options = {};
+    console.log("Generating files...".yellow);
+    if (param_2 === initCommands[0]) removeAllFiles();
+    if (param_2 === initCommands[1])  {
+        if (param_3 === initCommands[2]) options = { verbose: true };
+        copyDevFiles(options);
+        return;
+    }
+    if (param_2 === initCommands[2]) options = { verbose: true };
+    copyDevAndNode(options);
 };
 
-exports.getDepController = () => {
-    console.log("Generating dependencies...");
-    copyNodeModules();
+exports.getDepController = (param_2) => {
+    let options = {};
+    if (param_2 === "verbose") options = { verbose: true };
+    copyNodeModules(options);
 }
 
 exports.cleanController = (param_2) => {

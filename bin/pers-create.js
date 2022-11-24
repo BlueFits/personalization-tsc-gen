@@ -10,10 +10,10 @@ const param_3 = process.argv[4];
 const launch = async () => {
     switch(param_1) {
         case "get_dep": 
-            getDepController();
+            getDepController(param_2);
             break;
         case "init": 
-            initController(param_2);
+            initController(param_2, param_3);
             break;
         case "clean":
             cleanController(param_2);

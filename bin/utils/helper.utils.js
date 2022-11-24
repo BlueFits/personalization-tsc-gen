@@ -1,24 +1,27 @@
 const { copy } = require("./cli.utils");
 const path = require("path");
 const fs = require("fs");
-const rimraf = require("rimraf");
 const colors = require('colors');
 
-
-exports.removeFiles = (cleanDir) => {
-    for (let dir of cleanDir) {
-        rimraf.sync(path.join(process.cwd(), dir));
-    }
+const ncpTemplateCopy = async (options) => {
+    await copy("../../ncpTemplate/", "./", {end: 24, ...options})
 };
 
-exports.removeAllFiles = () => {
-    console.log("removing files...: ");
-    rimraf.sync(path.join(process.cwd(), "/*"));
-    console.log("DONE");
+const nodeModulesCopy = (options) => {
+    copy("../../node_modules/", "./node_modules/", {end: 20625, ...options})
+};
+
+exports.copyNodeModules = () => {
+    nodeModulesCopy();
 }
 
-exports.copyNodeModules = async () => {
-    await copy("../../node_modules/", "./node_modules/");
+exports.copyDevFiles = (options) => {
+    ncpTemplateCopy(options);
+}
+
+exports.copyDevAndNode = (options) => {
+    ncpTemplateCopy(options);
+    nodeModulesCopy(options);
 }
 
 exports.genTemplate = async (nameParam, template, customPath, filename) => {
