@@ -1,21 +1,13 @@
 import { createRoot } from 'react-dom/client';
 import React from "react";
 
-export enum Itype {
-    append,
-    prepend,
-    replace,
-    html,
-    before,
-};
-
 type jQueryElement = string;
 
 type createReactRootOptions = {
     rootID: string, 
     target?: string | null, 
     render: React.ReactNode, 
-    type?: Itype,
+    type?: "append" | "prepend" | "replace" | "html" | "before";
     wrapperElement?: jQueryElement; 
     makeTargetRoot?: boolean;
     customTarget?: string;
@@ -44,19 +36,19 @@ export const createReactRoot = async (
             rootElem = $(customTarget)
         }
         switch(type) {
-            case Itype.append:
+            case "append":
                 $(target).append(rootElem);
                 break;
-            case Itype.prepend:
+            case "prepend":
                 $(target).prepend(rootElem);
                 break;
-            case Itype.replace: 
+            case "replace": 
                 $(target).replaceWith(rootElem);
                 break;
-            case Itype.html:
+            case "html":
                 $(target).html(rootElem);
                 break;
-            case Itype.before: 
+            case "before": 
                 $(target).before(rootElem);
             default:
                 $(target).append(rootElem);

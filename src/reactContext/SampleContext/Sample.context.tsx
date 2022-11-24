@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./SampleContext.module.css";
 import Sample from "../../components/Sample/Sample";
-import { createReactRoot, Itype } from "../../utils/react.utils";
+import { createReactRoot } from "../../utils/react.utils";
 
 const Index = () => {
     return (
@@ -16,7 +16,7 @@ export default class SampleContext {
         createReactRoot({
             rootID: "sample_id",
             target: "#persCategoryScroller",
-            type: Itype.append,
+            type: "append",
             render: <Index />,
         });
     }

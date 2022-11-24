@@ -19,7 +19,7 @@ exports.getDepController = () => {
     copyNodeModules();
 }
 
-exports.cleanController = () => {
+exports.cleanController = (param_2) => {
     param_2 === "--full" ? removeAllFiles() : removeFiles(cleanDir);
     console.log("DONE");
 }

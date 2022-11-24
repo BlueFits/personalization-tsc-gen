@@ -16,7 +16,7 @@ const launch = async () => {
             initController(param_2);
             break;
         case "clean":
-            cleanController();
+            cleanController(param_2);
             break;
         case "-v":
             console.log(JSON.parse(JSON.stringify(packageJSON)).version);

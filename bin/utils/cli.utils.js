@@ -58,11 +58,13 @@ exports.copyAll = async ({ noDep }) => {
                 return true;
             } else {
                 if (
-                    !source.includes("personalization-tsc-gen\\node_modules") && 
-                    !source.includes("personalization-tsc-gen\\.git") && 
-                    !source.includes("personalization-tsc-gen\\dist") && 
-                    !source.includes("personalization-tsc-gen\\bin")
+                    source.includes(`${path.join(__dirname, "../../")}node_modules`) ||
+                    source.includes(`${path.join(__dirname, "../../")}.git`) ||
+                    source.includes(`${path.join(__dirname, "../../")}dist`) || 
+                    source.includes(`${path.join(__dirname, "../../")}bin`)
                 ) {
+                    return false;
+                } else {
                     console.log(colors.blue("COPYING W/ NO DEP"), source);
                     return true;
                 }

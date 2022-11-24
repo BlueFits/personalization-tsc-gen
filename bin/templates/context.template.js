@@ -1,6 +1,6 @@
 module.exports =  `
 import React from "react";
-import { createReactRoot, Itype } from "../../utils/react.utils";
+import { createReactRoot } from "../../utils/react.utils";
 
 const Index = () => {
     return (
@@ -15,7 +15,7 @@ export default class TEMP_NAME {
         createReactRoot({
             rootID: "pers_TEMP_NAME_id",
             target: "",
-            type: Itype.append,
+            type: "append",
             render: <Index />,
         });
     }
