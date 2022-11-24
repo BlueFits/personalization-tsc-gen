@@ -1,4 +1,4 @@
-const { copy, copyAll } = require("./cli.utils");
+const { copy } = require("./cli.utils");
 const path = require("path");
 const fs = require("fs");
 const rimraf = require("rimraf");
@@ -21,10 +21,6 @@ exports.copyNodeModules = async () => {
     await copy("../../node_modules/", "./node_modules/");
 }
 
-exports.copyAllWithException = async (options) => {
-    await copyAll(options);
-};
-
 exports.genTemplate = async (nameParam, template, customPath, filename) => {
     let isCreated = false;
     const currDir = process.cwd();
@@ -38,3 +34,11 @@ exports.genTemplate = async (nameParam, template, customPath, filename) => {
     fs.writeFile(filePath, templateValue, (err) => {if(err) throw new Error(err);});
     isCreated ? console.log(colors.green("CREATE"), filePath) : console.log(colors.blue("UPDATED"), filePath) 
 }
+
+function HelpInfo(name, alias, description) {
+    this.name = name;
+    this.alias = alias;
+    this.description = description;
+}
+
+exports.HelpConstructor = (name, alias, description) => new HelpInfo(name, alias, description);

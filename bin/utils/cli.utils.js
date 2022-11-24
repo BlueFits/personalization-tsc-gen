@@ -46,17 +46,27 @@ exports.copyAll = async ({ noDep }) => {
     ncp(path.join(__dirname, "../../"), path.join(currDir, ""), {
         clobber: false,
         stopOnErr: true,
-        filter: (source) => {
-            if (!noDep) {
-                console.log(colors.blue("COPYING"), source);
-                return true
-            }
-            if (!fs.lstatSync(source).isDirectory()) return true;
-            if (!source.match(/\\node_modules/) && !source.match(/\\.git/) && !source.match(/\\dist/)) {
+        filter: !noDep ? (source) => {
+            if (fs.lstatSync(source).isDirectory()) {
+                return true;
+            } else {
                 console.log(colors.blue("COPYING"), source);
                 return true;
             }
-            return false;
+        } : (source) => {
+            if (fs.lstatSync(source).isDirectory()) {
+                return true;
+            } else {
+                if (
+                    !source.includes("personalization-tsc-gen\\node_modules") && 
+                    !source.includes("personalization-tsc-gen\\.git") && 
+                    !source.includes("personalization-tsc-gen\\dist") && 
+                    !source.includes("personalization-tsc-gen\\bin")
+                ) {
+                    console.log(colors.blue("COPYING W/ NO DEP"), source);
+                    return true;
+                }
+            }
         }
     }, (err) => {
         if (err) { return console.error(err);}
