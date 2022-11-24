@@ -1,5 +1,5 @@
-const { removeFiles, copyNodeModules, genTemplate, HelpConstructor, copyDevFiles, copyDevAndNode} = require("../utils/helper.utils");
-const { table, removeAllFiles } = require("../utils/cli.utils");
+const { copyNodeModules, genTemplate, HelpConstructor, copyDevFiles, copyDevAndNode} = require("../utils/helper.utils");
+const { table, removeAllFiles, removeFiles } = require("../utils/cli.utils");
 const { cleanDir } = require("../constants/dir.constants");
 const templateIndex = require("../templates/index");
 
