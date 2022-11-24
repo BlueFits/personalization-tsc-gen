@@ -1,6 +1,6 @@
 {
   "name": "@bluefits/pers-tsc-gen",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "",
   "bin": {
     "pers-tsc-gen": "bin/pers-create.js"
@@ -9,6 +9,7 @@
     "build": "npm run clean && webpack --config webpack.config.prod.js",
     "build:dev": "webpack",
     "start": "webpack && concurrently \"webpack --watch\" \"npm run livereload\"",
+    "start:alt": "webpack && concurrently \"webpack --watch\"",
     "serve": "webpack serve",
     "clean": "rimraf dist/*",
     "livereload": "node live-reload.config.js",
