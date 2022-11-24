@@ -1,7 +1,11 @@
 const { copyNodeModules, genTemplate, HelpConstructor, copyDevFiles, copyDevAndNode} = require("../utils/helper.utils");
-const { table, removeAllFiles, removeFiles } = require("../utils/cli.utils");
+const { table, removeAllFiles, removeFiles, runCLI } = require("../utils/cli.utils");
 const { cleanDir } = require("../constants/dir.constants");
 const templateIndex = require("../templates/index");
+const path = require("path");
+
+const rootDir = path.join(__dirname, "../../")
+
 
 const initCommands = ["--overwrite", "--no_dep", "verbose"];
 exports.initController = async (param_2, param_3) => {
@@ -53,4 +57,12 @@ exports.genController = (param_2, param_3) => {
         genTemplate(nameParam, templateIndex.componentTemplate, `./src/components/${nameParam}/`, `${nameParam}.tsx`);
 
     }
+}
+
+exports.startController = async (param_2) => {
+    await runCLI(`npm start --prefix ${rootDir}`);
+};
+
+exports.installReload = async () => {
+    await runCLI(`npm install --only=dev --prefix ${rootDir}`);
 }

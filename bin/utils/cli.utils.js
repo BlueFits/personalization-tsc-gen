@@ -7,6 +7,8 @@ const fs = require("fs");
 const colors = require('colors');const cliProgress = require('cli-progress');
 const { readdir, stat } = require('fs/promises');
 const rimraf = require("rimraf");
+const { exec } = require('child_process');
+
 
 const dirSize = async directory => {
     const files = await readdir( directory );
@@ -31,7 +33,6 @@ exports.copy = async (from, to, options = {}) => {
     const size = await dirSize(fromPath);
     const bar1 = new cliProgress.SingleBar({}, cliProgress.Presets.rect);
     if (!options.verbose) bar1.start(options.end || size, 0);
-    
     ncp(fromPath, path.join(currDir, to || ""), { 
         clobber: false, 
         stopOnErr: true ,
@@ -50,57 +51,12 @@ exports.copy = async (from, to, options = {}) => {
     }, (err) => {
         if (err) return console.error(colors.red("ERROR:"), err);
         if (!options.verbose) {
-            // bar1.update(size);
+            bar1.update(options.end || size);
             bar1.stop();
         }
         console.log("DONE".green);
     });
 }
-
-// exports.copyAll = async ({ noDep }) => {
-//     if (noDep) console.log(colors.bgBlue("Bypassing all dependencies..."));
-
-//     const currDir = process.cwd();
-
-//     ncp(path.join(__dirname, "../../"), path.join(currDir, ""), {
-//         clobber: false,
-//         stopOnErr: true,
-//         filter: !noDep ? (source) => {
-//             if (fs.lstatSync(source).isDirectory()) {
-//                 return true;
-//             } else {
-//                 console.log(colors.blue("COPYING"), source);
-//                 return true;
-//             }
-//         } : (source) => {
-//             if (fs.lstatSync(source).isDirectory()) {
-//                 return true;
-//             } else {
-//                 if (
-//                     source.includes(`${path.join(__dirname, "../../")}node_modules`) ||
-//                     source.includes(`${path.join(__dirname, "../../")}.git`) ||
-//                     source.includes(`${path.join(__dirname, "../../")}dist`) || 
-//                     source.includes(`${path.join(__dirname, "../../")}bin`)
-//                 ) {
-//                     return false;
-//                 } else {
-//                     console.log(colors.blue("COPYING W/ NO DEP"), source);
-//                     return true;
-//                 }
-//             }
-//         }
-//     }, (err) => {
-//         if (err) { return console.error(err);}
-//         console.log(colors.yellow("finalizing files..."));
-//         //Remove excess nodule modules folder if there are no dep
-//         if (noDep) rimraf.sync(path.join(process.cwd(), "/node_modules"));
-//         rimraf.sync(path.join(process.cwd(), "/bin"));
-//         rimraf.sync(path.join(process.cwd(), "/dist"));
-//         rimraf.sync(path.join(process.cwd(), "/.git"));
-//         rimraf.sync(path.join(process.cwd(), "/.gitignore"));        
-//         console.log(colors.green("DONE"));
-//     });
-// }
 
 exports.table = (input) => {
     // @see https://stackoverflow.com/a/67859384
@@ -131,3 +87,12 @@ exports.removeAllFiles = () => {
     rimraf.sync(path.join(process.cwd(), "/*"));
     console.log("DONE");
 }
+
+exports.runCLI = async (cmd) => {
+    const child = exec(cmd, (err) => {
+        if (err) console.error(err);
+    });
+    child.stderr.pipe(process.stderr);
+    child.stdout.pipe(process.stdout);
+    await new Promise((resolve) => child.on('close', resolve));
+};

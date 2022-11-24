@@ -1,4 +1,4 @@
-const { copy } = require("./cli.utils");
+const { copy, runCLI } = require("./cli.utils");
 const path = require("path");
 const fs = require("fs");
 const colors = require('colors');
@@ -7,8 +7,8 @@ const ncpTemplateCopy = async (options) => {
     await copy("../../ncpTemplate/", "./", {end: 24, ...options})
 };
 
-const nodeModulesCopy = (options) => {
-    copy("../../node_modules/", "./node_modules/", {end: 20625, ...options})
+const nodeModulesCopy = async (options) => {
+    await copy("../../node_modules/", "./node_modules/", {end: 20625, ...options})
 };
 
 exports.copyNodeModules = () => {
