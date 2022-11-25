@@ -64,5 +64,5 @@ exports.startController = async (param_2) => {
 };
 
 exports.installReload = async () => {
-    await runCLI(`npm install --only=dev --prefix ${rootDir}`);
+    await runCLI(`npm install -D --prefix ${rootDir}`);
 }

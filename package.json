@@ -1,6 +1,6 @@
 {
   "name": "@bluefits/pers-tsc-gen",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "description": "",
   "bin": {
     "pers-tsc-gen": "bin/pers-create.js"
@@ -48,6 +48,7 @@
     "webpack-cli": "^4.10.0"
   },
   "devDependencies": {
+    "@bluefits/pers-tsc-gen": "file:../../../Desktop/sample",
     "pers-live-reload": "^1.0.4"
   }
 }

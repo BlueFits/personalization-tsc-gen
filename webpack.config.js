@@ -17,18 +17,18 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                exclude: /node_modules/,
+                exclude: /node_modules\/(?!(@bluefits\/pers-tsc-gen)\/).*/,
                 use: ['babel-loader'],
             },
             {
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
+                exclude: /node_modules\/(?!(@bluefits\/pers-tsc-gen)\/).*/,
                 use: ['babel-loader'],
             },
             {
                 test: /\.ts$/,
                 use: "ts-loader",
-                exclude: /node_modules/
+                exclude: /node_modules\/(?!(@bluefits\/pers-tsc-gen)\/).*/,
             },
             {
                 test: /\.css$/,
