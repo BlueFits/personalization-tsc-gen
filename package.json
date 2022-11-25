@@ -48,7 +48,6 @@
     "webpack-cli": "^4.10.0"
   },
   "devDependencies": {
-    "@bluefits/pers-tsc-gen": "file:../../../Desktop/sample",
     "pers-live-reload": "^1.0.4"
   }
 }
